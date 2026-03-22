@@ -3,7 +3,6 @@ import {
   collection, doc,
   getDocs, getDoc, addDoc, setDoc, updateDoc, deleteDoc,
   query, orderBy, limit, serverTimestamp,
-  ref as storageRef,
 } from 'firebase/firestore'
 import {
   ref, uploadBytesResumable, getDownloadURL, deleteObject
@@ -39,16 +38,22 @@ export async function getUsers(limitN = 50) {
 //  STORY CRUD
 // ══════════════════════════════════════════════════
 
-export async function createStory(data, coverFile) {
+export async function createStory(data, coverFile, authorUid = null) {
   let coverUrl = data.coverUrl || ''
   if (coverFile) coverUrl = await uploadImage(coverFile, `stories/covers/${Date.now()}_${coverFile.name}`)
-  const ref = await addDoc(collection(db, 'stories'), {
+  const docRef = await addDoc(collection(db, 'stories'), {
     ...data, coverUrl,
-    views: 0, rating: 0,
+    views: 0, rating: 0, likes: 0,
+    authorUid: authorUid || null,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   })
-  return ref.id
+  // Cập nhật stats CTV
+  if (authorUid) {
+    const uref = doc(db, 'users', authorUid)
+    await updateDoc(uref, { stories: (await getDoc(uref)).data()?.stories + 1 || 1 }).catch(()=>{})
+  }
+  return docRef.id
 }
 
 export async function updateStory(storyId, data, newCoverFile) {
