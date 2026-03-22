@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO / OG tags cho chia sẻ Facebook & TikTok -->
+    <title>Mèo Kam Mập — Đọc truyện tranh online</title>
+    <meta name="description" content="Đọc truyện tranh, manga, webtoon mới nhất tại Mèo Kam Mập. Cập nhật nhanh, miễn phí." />
+    <meta property="og:title"       content="Mèo Kam Mập — Đọc truyện tranh online" />
+    <meta property="og:description" content="Đọc truyện tranh, manga, webtoon mới nhất. Cập nhật nhanh, miễn phí." />
+    <meta property="og:image"       content="/og-cover.jpg" />
+    <meta property="og:url"         content="https://meokammap.com" />
+    <meta property="og:type"        content="website" />
+    <meta name="twitter:card"       content="summary_large_image" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Google AdSense — thay ca-pub-XXXX bằng ID thật -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXX" crossorigin="anonymous"></script>
+
+    <!-- Facebook SDK cho Login & Share -->
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId   : 'YOUR_FB_APP_ID',   // ← thay bằng App ID Facebook thật
+          cookie  : true,
+          xfbml   : true,
+          version : 'v19.0'
+        });
+      };
+    </script>
+    <script async defer src="https://connect.facebook.net/vi_VN/sdk.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+/* src/styles/global.css */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Nunito', 'Segoe UI', sans-serif;
+  background: #f8fafc;
+  color: #1e293b;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+button { cursor: pointer; }
+a { color: inherit; }
+
+/* Scrollbar đẹp */
+::-webkit-scrollbar       { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
+
+/* AdSense placeholder */
+.adsbygoogle { display: block; }

@@ -1,0 +1,53 @@
+// firestore.rules
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Helpers ─────────────────────────────────────────────
+    function isAuth()  { return request.auth != null; }
+    function isOwner(uid) { return request.auth.uid == uid; }
+    function isAdmin() {
+      return isAuth() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    function isCTV() {
+      let role = get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+      return isAuth() && (role == 'ctv' || role == 'admin');
+    }
+
+    // ── Users ────────────────────────────────────────────────
+    match /users/{uid} {
+      allow read:   if isAuth() && (isOwner(uid) || isAdmin());
+      allow create: if isAuth() && isOwner(uid);
+      allow update: if isAuth() && isOwner(uid);
+
+      // Sub-collection: unlocked chapters
+      match /unlocked/{docId} {
+        allow read, write: if isAuth() && isOwner(uid);
+      }
+    }
+
+    // ── Stories ──────────────────────────────────────────────
+    match /stories/{storyId} {
+      allow read: if true;   // public
+      allow write: if isCTV();
+
+      // ── Chapters ──────────────────────────────────────────
+      match /chapters/{chapterId} {
+        allow read: if true;
+        allow write: if isCTV();
+
+        // ── Comments ────────────────────────────────────────
+        match /comments/{commentId} {
+          allow read:   if true;
+          allow create: if isAuth()
+                        && request.resource.data.uid == request.auth.uid
+                        && request.resource.data.text.size() <= 500;
+          allow update: if isAdmin();   // chỉ admin xoá/sửa comment
+          allow delete: if isAdmin() || (isAuth() && isOwner(resource.data.uid));
+        }
+      }
+    }
+  }
+}
