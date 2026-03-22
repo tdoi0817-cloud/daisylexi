@@ -1,11 +1,11 @@
 // src/components/CoinModal.jsx
-// Trong thực tế: tích hợp VNPay / Momo webhook để cộng xu sau khi thanh toán
+// Trong thực tế: tích hợp 💳 Card / PayPal webhook để cộng coins sau khi thanh toán
 export default function CoinModal({ currentCoins, onClose, onPurchase }) {
   const packages = [
     { coins: 20,  price: '10.000₫', bonus: '' },
-    { coins: 50,  price: '20.000₫', bonus: '+5 xu' },
-    { coins: 120, price: '45.000₫', bonus: '+20 xu 🔥' },
-    { coins: 300, price: '99.000₫', bonus: '+80 xu ⚡' },
+    { coins: 50,  price: '20.000₫', bonus: '+5 coins' },
+    { coins: 120, price: '45.000₫', bonus: '+20 coins 🔥' },
+    { coins: 300, price: '99.000₫', bonus: '+80 coins ⚡' },
   ]
 
   return (
@@ -15,8 +15,8 @@ export default function CoinModal({ currentCoins, onClose, onPurchase }) {
 
         <div style={{ textAlign: 'center', marginBottom: 20 }}>
           <div style={{ fontSize: 36 }}>🪙</div>
-          <h3 style={{ margin: '6px 0 4px', fontSize: 17, fontWeight: 800 }}>Nạp xu</h3>
-          <p style={{ margin: 0, fontSize: 13, color: '#6b7280' }}>Hiện có: <strong style={{ color: '#f59e0b' }}>{currentCoins} xu</strong></p>
+          <h3 style={{ margin: '6px 0 4px', fontSize: 17, fontWeight: 800 }}>Top Up Coins</h3>
+          <p style={{ margin: 0, fontSize: 13, color: '#6b7280' }}>Current balance: <strong style={{ color: '#f59e0b' }}>{currentCoins} coins</strong></p>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 16 }}>
@@ -28,16 +28,16 @@ export default function CoinModal({ currentCoins, onClose, onPurchase }) {
                 cursor: 'pointer', textAlign: 'center',
               }}>
               <div style={{ fontSize: 22, fontWeight: 800, color: '#f59e0b' }}>{pkg.coins}</div>
-              <div style={{ fontSize: 11, color: '#6b7280' }}>xu</div>
+              <div style={{ fontSize: 11, color: '#6b7280' }}>coins</div>
               {pkg.bonus && <div style={{ fontSize: 11, color: '#16a34a', fontWeight: 700, marginTop: 2 }}>{pkg.bonus}</div>}
               <div style={{ fontSize: 14, fontWeight: 800, color: '#374151', marginTop: 6 }}>{pkg.price}</div>
             </button>
           ))}
         </div>
 
-        <p style={{ fontSize: 12, color: '#6b7280', textAlign: 'center', marginBottom: 12 }}>Chọn phương thức thanh toán</p>
+        <p style={{ fontSize: 12, color: '#6b7280', textAlign: 'center', marginBottom: 12 }}>Choose payment method</p>
         <div style={{ display: 'flex', gap: 8 }}>
-          {['💳 VNPay', '📱 Momo', '💚 ZaloPay'].map(m => (
+          {['💳 💳 Card', '📱 PayPal', '💚 Crypto'].map(m => (
             <button key={m} style={{ flex: 1, padding: '9px 4px', border: '1.5px solid #e2e8f0', borderRadius: 10, background: '#fff', fontSize: 12, cursor: 'pointer', fontWeight: 700, color: '#374151' }}
               onMouseOver={e => e.currentTarget.style.borderColor = '#6366f1'}
               onMouseOut={e => e.currentTarget.style.borderColor = '#e2e8f0'}>
@@ -47,8 +47,8 @@ export default function CoinModal({ currentCoins, onClose, onPurchase }) {
         </div>
 
         <p style={{ fontSize: 11, color: '#9ca3af', textAlign: 'center', marginTop: 12, marginBottom: 0 }}>
-          * Demo: click gói bất kỳ để nhận xu ngay.<br/>
-          Thực tế: tích hợp VNPay/Momo webhook.
+          * Demo: click gói bất kỳ để nhận coins ngay.<br/>
+          Thực tế: tích hợp 💳 Card/PayPal webhook.
         </p>
       </div>
     </div>

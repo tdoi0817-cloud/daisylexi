@@ -115,10 +115,10 @@ function AdBanner({ slot = "top" }) {
 // ─── SHARE MODAL ───────────────────────────────────────────────
 function ShareModal({ story, chapter, onClose }) {
   const [copied, setCopied] = useState(false);
-  const shareUrl = `https://meokammap.com/truyen/${story.id}${chapter ? `/chuong-${chapter.id}` : ""}`;
+  const shareUrl = `https://daisylexi.com/truyen/${story.id}${chapter ? `/chuong-${chapter.id}` : ""}`;
   const shareText = chapter
-    ? `📖 Đọc "${story.title}" - ${chapter.title} tại Mèo Kam Mập! Truyện hay lắm nha 🔥`
-    : `📖 "${story.title}" - Truyện hay đang hot tại Mèo Kam Mập! Đọc ngay 👇`;
+    ? `📖 Đọc "${story.title}" - ${chapter.title} tại Readunlocked! Truyện hay lắm nha 🔥`
+    : `📖 "${story.title}" - Truyện hay đang hot tại Readunlocked! Đọc ngay 👇`;
 
   const copy = () => {
     navigator.clipboard.writeText(shareUrl).catch(() => {});
@@ -137,7 +137,7 @@ function ShareModal({ story, chapter, onClose }) {
         <div style={{ background: "linear-gradient(135deg, #1e1b4b, #312e81)", borderRadius: 12, padding: 16, marginBottom: 16, display: "flex", gap: 12, alignItems: "center" }}>
           <img src={story.cover} alt="" style={{ width: 60, height: 84, borderRadius: 8, objectFit: "cover" }} />
           <div>
-            <div style={{ color: "#a5b4fc", fontSize: 11, marginBottom: 4 }}>meokammap.com</div>
+            <div style={{ color: "#a5b4fc", fontSize: 11, marginBottom: 4 }}>daisylexi.com</div>
             <div style={{ color: "#fff", fontWeight: 700, fontSize: 14, lineHeight: 1.3 }}>{story.title}</div>
             {chapter && <div style={{ color: "#c7d2fe", fontSize: 12, marginTop: 4 }}>{chapter.title}</div>}
             <div style={{ color: "#818cf8", fontSize: 11, marginTop: 6 }}>⭐ {story.rating} · 👁 {(story.views / 1000).toFixed(0)}K lượt đọc</div>
@@ -194,7 +194,7 @@ function AuthModal({ onClose, onLogin }) {
         <button onClick={onClose} style={{ position: "absolute", top: 12, right: 12, background: "none", border: "none", cursor: "pointer", color: "#6b7280" }}><Icon.close /></button>
         <div style={{ textAlign: "center", marginBottom: 20 }}>
           <div style={{ fontSize: 28, marginBottom: 4 }}>🐱</div>
-          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Mèo Kam Mập</h2>
+          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Readunlocked</h2>
           <p style={{ margin: "4px 0 0", fontSize: 13, color: "#6b7280" }}>Đăng nhập để đọc truyện & tích xu</p>
         </div>
 
@@ -530,7 +530,7 @@ export default function App() {
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
             <span style={{ fontSize: 22 }}>🐱</span>
-            <span style={{ fontWeight: 800, fontSize: 16, color: "#1e1b4b" }}>Mèo Kam Mập</span>
+            <span style={{ fontWeight: 800, fontSize: 16, color: "#1e1b4b" }}>Readunlocked</span>
           </div>
           <input value={search} onChange={e => { setSearch(e.target.value); setSelectedStory(null); }}
             placeholder="Tìm truyện theo tiêu đề..." style={{ flex: 1, padding: "8px 14px", border: "1px solid #e2e8f0", borderRadius: 20, fontSize: 13, outline: "none", background: "#f8fafc" }} />

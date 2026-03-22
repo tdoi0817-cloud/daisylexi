@@ -2,7 +2,7 @@
 
 // ── Dynamic OG tags per page ────────────────────────────────────
 export function setPageMeta({ title, description, image, url, type = 'website' }) {
-  const base = 'Mèo Kam Mập'
+  const base = 'Readunlocked'
   const fullTitle = title ? `${title} — ${base}` : base
 
   document.title = fullTitle
@@ -14,7 +14,7 @@ export function setPageMeta({ title, description, image, url, type = 'website' }
   }
 
   setMeta('og:title',       fullTitle)
-  setMeta('og:description', description || 'Đọc truyện tranh, manga, webtoon mới nhất tại Mèo Kam Mập.')
+  setMeta('og:description', description || 'Đọc truyện tranh, manga, webtoon mới nhất tại Readunlocked.')
   setMeta('og:image',       image || '/og-cover.jpg')
   setMeta('og:url',         url || window.location.href)
   setMeta('og:type',        type)
@@ -38,7 +38,7 @@ export function injectStorySchema(story) {
     author:      { '@type': 'Person', name: story.author || story.team },
     genre:       (story.genres || []).join(', '),
     url:         `${window.location.origin}/truyen/${story.id}`,
-    publisher:   { '@type': 'Organization', name: 'Mèo Kam Mập' },
+    publisher:   { '@type': 'Organization', name: 'Readunlocked' },
     inLanguage:  'vi',
     numberOfPages: story.chapterCount || 1,
   }
@@ -51,7 +51,7 @@ export function injectStorySchema(story) {
 }
 
 // ── Sitemap XML generator (gọi từ Cloud Function hoặc build script) ──
-export function generateSitemapXml(stories, baseUrl = 'https://meokammap.com') {
+export function generateSitemapXml(stories, baseUrl = 'https://daisylexi.com') {
   const now = new Date().toISOString().split('T')[0]
 
   const staticUrls = [

@@ -2,7 +2,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // HƯỚNG DẪN:
 // 1. Vào https://console.firebase.google.com
-// 2. Tạo project mới → "meokammap"
+// 2. Tạo project mới → "readunlocked"
 // 3. Project Settings → General → Your apps → Add app (Web)
 // 4. Copy firebaseConfig vào bên dưới
 // 5. Tạo file .env ở root và điền các VITE_ variables

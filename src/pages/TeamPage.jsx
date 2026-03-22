@@ -13,7 +13,7 @@ const MOCK_MEMBERS = [
   { id:'5', displayName:'Mèo Bùng Beo',             photoURL:'https://picsum.photos/seed/u5/80/80',  role:'ctv', badge:'PUBLISHER', badgeRole:'Contributor', bio:'Chưa có giới thiệu...', joinedAt:'09/01/2026', stories:11, totalViews:230000, totalLikes:980,  revenue:710000, online:false },
   { id:'6', displayName:'Cá Chép Ngẩm Mưa',         photoURL:'https://picsum.photos/seed/u6/80/80',  role:'ctv', badge:'PUBLISHER', badgeRole:'Contributor', bio:'Vừa edit vừa ngẩm mưa',  joinedAt:'09/01/2026', stories:18, totalViews:392000, totalLikes:2100, revenue:1200000, online:true  },
   { id:'7', displayName:'Lạc Giới Tinh Thư',         photoURL:'https://picsum.photos/seed/u7/80/80',  role:'admin', badge:'ADMIN TEAM', badgeRole:'Core Member', bio:'Nhóm dịch ngôn tình hiện đại, mang đến những câu chuyện tình yêu đầy cảm xúc, chân thật và sâu sắc...', joinedAt:'20/10/2025', stories:35, totalViews:820000, totalLikes:5600, revenue:3200000, online:true  },
-  { id:'8', displayName:'Mèo Kam Mập',               photoURL:'https://picsum.photos/seed/u8/80/80',  role:'admin', badge:'ADMIN TEAM', badgeRole:'Core Member', bio:'Chưa có giới thiệu...', joinedAt:'19/10/2025', stories:42, totalViews:1200000, totalLikes:8900, revenue:4500000, online:true  },
+  { id:'8', displayName:'Readunlocked',               photoURL:'https://picsum.photos/seed/u8/80/80',  role:'admin', badge:'ADMIN TEAM', badgeRole:'Core Member', bio:'Chưa có giới thiệu...', joinedAt:'19/10/2025', stories:42, totalViews:1200000, totalLikes:8900, revenue:4500000, online:true  },
 ]
 
 // ── Tính hoa hồng ───────────────────────────────────────────────

@@ -20,7 +20,7 @@ export default function AdminLayout({ user }) {
         <div style={{ width:200, flexShrink:0, background:'#fff', borderRight:'1px solid #e2e8f0', padding:'16px 0' }}>
           <div style={{ padding:'0 16px 16px', borderBottom:'1px solid #f1f5f9', marginBottom:8 }}>
             <div style={{ fontWeight:800, fontSize:14, color:'#1e293b' }}>⚙️ Quản trị</div>
-            <div style={{ fontSize:11, color:'#9ca3af', marginTop:2 }}>Mèo Kam Mập CMS</div>
+            <div style={{ fontSize:11, color:'#9ca3af', marginTop:2 }}>Readunlocked CMS</div>
           </div>
           {MENU.filter(m => !m.adminOnly || isAdmin).map(m => {
             const active = location.pathname === m.path

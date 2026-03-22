@@ -9,8 +9,8 @@ export default function ShareModal({ story, chapter, onClose }) {
     ? `${baseUrl}/truyen/${story.id}/chuong/${chapter.id}`
     : `${baseUrl}/truyen/${story.id}`
   const shareText = chapter
-    ? `📖 Đọc "${story.title}" - ${chapter.title} tại Mèo Kam Mập! Truyện hay lắm nha 🔥`
-    : `📖 "${story.title}" đang hot tại Mèo Kam Mập! Đọc ngay miễn phí 👇`
+    ? `📖 Đọc "${story.title}" - ${chapter.title} tại Readunlocked! Truyện hay lắm nha 🔥`
+    : `📖 "${story.title}" đang hot tại Readunlocked! Đọc ngay miễn phí 👇`
 
   const copy = () => {
     navigator.clipboard.writeText(shareUrl).catch(() => {})
@@ -39,7 +39,7 @@ export default function ShareModal({ story, chapter, onClose }) {
           <img src={story.coverUrl || story.cover || `https://picsum.photos/seed/${story.id}/80/112`}
             alt="" style={{ width: 56, height: 78, borderRadius: 8, objectFit: 'cover', flexShrink: 0 }} />
           <div>
-            <div style={{ color: '#a5b4fc', fontSize: 11, marginBottom: 4 }}>meokammap.com</div>
+            <div style={{ color: '#a5b4fc', fontSize: 11, marginBottom: 4 }}>daisylexi.com</div>
             <div style={{ color: '#fff', fontWeight: 800, fontSize: 14, lineHeight: 1.3 }}>{story.title}</div>
             {chapter && <div style={{ color: '#c7d2fe', fontSize: 12, marginTop: 4 }}>{chapter.title}</div>}
             <div style={{ color: '#818cf8', fontSize: 11, marginTop: 6 }}>

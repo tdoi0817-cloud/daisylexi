@@ -50,7 +50,7 @@ function HeroBanner({ story }) {
         <img src={story.coverUrl} alt={story.title}
           style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
         <div style={{ position:'absolute', bottom:8, right:8, background:'rgba(255,255,255,0.82)', borderRadius:6, padding:'2px 8px', fontSize:10, color:'#374151', fontWeight:600 }}>
-          meokammap.com
+          daisylexi.com
         </div>
       </div>
 

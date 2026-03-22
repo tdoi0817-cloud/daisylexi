@@ -7,7 +7,7 @@ import AdminGuard from '../../components/admin/AdminGuard'
 export default function SEOManager() {
   const [stories, setStories]   = useState([])
   const [sitemap, setSitemap]   = useState('')
-  const [baseUrl, setBaseUrl]   = useState('https://meokammap.com')
+  const [baseUrl, setBaseUrl]   = useState('https://daisylexi.com')
   const [copied, setCopied]     = useState(false)
   const [loading, setLoading]   = useState(true)
   const [generating, setGen]    = useState(false)
@@ -78,7 +78,7 @@ export default function SEOManager() {
 
           <div style={{ display:'flex', gap:10, marginBottom:14, flexWrap:'wrap' }}>
             <input value={baseUrl} onChange={e=>setBaseUrl(e.target.value)}
-              placeholder="https://meokammap.com"
+              placeholder="https://daisylexi.com"
               style={{ flex:1, padding:'9px 12px', border:'1.5px solid #e2e8f0', borderRadius:10, fontSize:14, outline:'none', minWidth:200, fontFamily:'inherit' }}
               onFocus={e=>e.target.style.borderColor='#6366f1'}
               onBlur={e=>e.target.style.borderColor='#e2e8f0'} />
