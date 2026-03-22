@@ -1,10 +1,7 @@
 // src/App.jsx
-// ─── App root: kết nối Firebase Auth + React Router ────────────
 import { useState } from 'react'
-import { Routes, Route, useNavigate, useParams } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import { useAuth } from './hooks/useAuth'
-
-// Lazy import pages (code-split)
 import HomePage    from './pages/HomePage'
 import StoryPage   from './pages/StoryPage'
 import ChapterPage from './pages/ChapterPage'
@@ -19,14 +16,17 @@ export default function App() {
 
   if (auth.loading) {
     return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-        <div style={{ fontSize: 40 }}>🐱</div>
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100vh', background:'#f4f6f9' }}>
+        <div style={{ textAlign:'center' }}>
+          <div style={{ fontSize:48, marginBottom:8 }}>🐱</div>
+          <div style={{ fontSize:13, color:'#6b7280' }}>Đang tải...</div>
+        </div>
       </div>
     )
   }
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto' }}>
+    <div style={{ minHeight:'100vh', background:'#f4f6f9' }}>
       <Header
         user={auth.user}
         onLoginClick={() => setShowAuth(true)}
@@ -34,21 +34,25 @@ export default function App() {
         onLogout={auth.logout}
       />
 
-      <div style={{ padding: '16px' }}>
+      {/* Page content — co giãn theo màn hình */}
+      <div className="app-wrapper page-content">
         <Routes>
-          <Route path="/"                          element={<HomePage  auth={auth} onLoginRequest={() => setShowAuth(true)} />} />
-          <Route path="/truyen/:storyId"           element={<StoryPage auth={auth} onLoginRequest={() => setShowAuth(true)} onCoinModal={() => setShowCoin(true)} />} />
-          <Route path="/truyen/:storyId/chuong/:chapterId" element={<ChapterPage auth={auth} onLoginRequest={() => setShowAuth(true)} onCoinModal={() => setShowCoin(true)} />} />
+          <Route path="/"
+            element={<HomePage auth={auth} onLoginRequest={() => setShowAuth(true)} />} />
+          <Route path="/truyen/:storyId"
+            element={<StoryPage auth={auth} onLoginRequest={() => setShowAuth(true)} onCoinModal={() => setShowCoin(true)} />} />
+          <Route path="/truyen/:storyId/chuong/:chapterId"
+            element={<ChapterPage auth={auth} onLoginRequest={() => setShowAuth(true)} onCoinModal={() => setShowCoin(true)} />} />
         </Routes>
       </div>
 
       {showAuth && (
         <AuthModal
           onClose={() => setShowAuth(false)}
-          onLoginGoogle={async () => { await auth.loginGoogle();   setShowAuth(false) }}
+          onLoginGoogle={async () => { await auth.loginGoogle(); setShowAuth(false) }}
           onLoginFacebook={async () => { await auth.loginFacebook(); setShowAuth(false) }}
-          onLoginEmail={async (email, pass) => { await auth.loginEmail(email, pass); setShowAuth(false) }}
-          onRegister={async (email, pass, name) => { await auth.registerEmail(email, pass, name); setShowAuth(false) }}
+          onLoginEmail={async (e,p) => { await auth.loginEmail(e,p); setShowAuth(false) }}
+          onRegister={async (e,p,n) => { await auth.registerEmail(e,p,n); setShowAuth(false) }}
         />
       )}
 
@@ -56,15 +60,13 @@ export default function App() {
         <CoinModal
           currentCoins={auth.user.coins}
           onClose={() => setShowCoin(false)}
-          onPurchase={async (amount) => { await auth.updateCoins(amount); setShowCoin(false) }}
+          onPurchase={async (n) => { await auth.updateCoins(n); setShowCoin(false) }}
         />
       )}
 
-      {/* Chat widget */}
-      <div
-        title="Chat hỗ trợ"
-        style={{ position: 'fixed', bottom: 20, right: 20, width: 50, height: 50, background: '#6366f1', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, boxShadow: '0 4px 14px rgba(99,102,241,0.45)', cursor: 'pointer', zIndex: 50 }}
-      >
+      {/* Chat bubble */}
+      <div title="Chat hỗ trợ"
+        style={{ position:'fixed', bottom:20, right:16, width:48, height:48, background:'#6366f1', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, boxShadow:'0 4px 16px rgba(99,102,241,0.45)', cursor:'pointer', zIndex:50 }}>
         💬
       </div>
     </div>

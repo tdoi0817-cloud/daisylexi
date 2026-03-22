@@ -1,22 +1,69 @@
-/* src/styles/global.css */
+/* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; }
-
 body {
   margin: 0;
   font-family: 'Nunito', 'Segoe UI', sans-serif;
-  background: #f8fafc;
+  background: #f4f6f9;
   color: #1e293b;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
-
 img { max-width: 100%; display: block; }
-button { cursor: pointer; }
+button { cursor: pointer; font-family: inherit; }
 a { color: inherit; }
 
-/* Scrollbar đẹp */
-::-webkit-scrollbar       { width: 6px; height: 6px; }
+/* ── Layout wrapper — co giãn theo thiết bị ── */
+.app-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+.page-content {
+  padding: 14px 16px;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar       { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
 
-/* AdSense placeholder */
-.adsbygoogle { display: block; }
+/* ── Responsive breakpoints ── */
+/* Mobile: < 640px */
+@media (max-width: 639px) {
+  .page-content { padding: 10px 12px; }
+  .hero-card    { flex-direction: column !important; padding: 14px !important; gap: 14px !important; }
+  .hero-cover   { width: 100% !important; height: 220px !important; border-radius: 12px !important; }
+  .hero-cover img { width: 100% !important; height: 220px !important; object-fit: cover; }
+  .hero-title   { font-size: 18px !important; }
+  .hero-desc    { -webkit-line-clamp: 3 !important; font-size: 13px !important; }
+  .hero-buttons { flex-wrap: wrap !important; }
+  .hero-buttons a,
+  .hero-buttons button { flex: 1 1 calc(50% - 5px) !important; justify-content: center !important; font-size: 13px !important; padding: 9px 10px !important; }
+  .meta-badges  { gap: 6px !important; }
+  .meta-badge   { font-size: 11px !important; padding: 4px 10px !important; }
+  .story-grid   { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
+  .rank-widget  { display: none !important; }
+  .two-col      { flex-direction: column !important; }
+  .nav-row      { justify-content: flex-start !important; gap: 4px !important; padding: 6px 12px 8px !important; overflow-x: auto !important; }
+  .nav-tab      { font-size: 12px !important; padding: 4px 10px !important; white-space: nowrap; }
+  .header-top   { padding: 8px 12px !important; gap: 8px !important; }
+  .header-logo-text { display: none !important; }
+  .search-input { font-size: 13px !important; }
+  .chapter-thumbs { gap: 6px !important; }
+  .chapter-thumb  { width: 44px !important; height: 44px !important; }
+}
+
+/* Tablet: 640–1023px */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .story-grid  { grid-template-columns: repeat(4, 1fr) !important; }
+  .rank-widget { display: none !important; }
+  .two-col     { flex-direction: column !important; }
+  .hero-cover  { width: 180px !important; height: 250px !important; }
+  .hero-cover img { width: 180px !important; height: 250px !important; }
+}
+
+/* Desktop: ≥ 1024px */
+@media (min-width: 1024px) {
+  .story-grid { grid-template-columns: repeat(5, 1fr) !important; }
+  .page-content { padding: 20px 24px; }
+}
