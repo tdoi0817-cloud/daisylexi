@@ -1,51 +1,50 @@
-// firestore.rules
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ── Helpers ─────────────────────────────────────────────
-    function isAuth()  { return request.auth != null; }
-    function isOwner(uid) { return request.auth.uid == uid; }
-    function isAdmin() {
-      return isAuth() &&
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
-    }
-    function isCTV() {
-      let role = get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
-      return isAuth() && (role == 'ctv' || role == 'admin');
-    }
+    function isAuth()    { return request.auth != null; }
+    function uid()       { return request.auth.uid; }
+    function userDoc()   { return get(/databases/$(database)/documents/users/$(uid())); }
+    function userRole()  { return isAuth() ? userDoc().data.get('role', 'reader') : 'reader'; }
+    function isAdmin()   { return userRole() == 'admin'; }
+    function isCTV()     { return userRole() == 'ctv' || isAdmin(); }
 
-    // ── Users ────────────────────────────────────────────────
-    match /users/{uid} {
-      allow read:   if isAuth() && (isOwner(uid) || isAdmin());
-      allow create: if isAuth() && isOwner(uid);
-      allow update: if isAuth() && isOwner(uid);
+    // ── Users ──
+    match /users/{userId} {
+      allow read:   if isAuth() && (uid() == userId || isAdmin());
+      allow create: if isAuth() && uid() == userId;
+      // User tự update coins; admin update role
+      allow update: if isAuth() && (
+        uid() == userId ||   // user cập nhật coins của mình
+        isAdmin()            // admin thay đổi role
+      );
 
-      // Sub-collection: unlocked chapters
       match /unlocked/{docId} {
-        allow read, write: if isAuth() && isOwner(uid);
+        allow read, write: if isAuth() && uid() == userId;
       }
     }
 
-    // ── Stories ──────────────────────────────────────────────
+    // ── Stories ──
     match /stories/{storyId} {
-      allow read: if true;   // public
-      allow write: if isCTV();
+      allow read:  if true;
+      allow create: if isCTV();
+      allow update: if isCTV();
+      allow delete: if isAdmin();
 
-      // ── Chapters ──────────────────────────────────────────
+      // ── Chapters ──
       match /chapters/{chapterId} {
-        allow read: if true;
-        allow write: if isCTV();
+        allow read:   if true;
+        allow write:  if isCTV();
 
-        // ── Comments ────────────────────────────────────────
+        // ── Comments ──
         match /comments/{commentId} {
           allow read:   if true;
           allow create: if isAuth()
-                        && request.resource.data.uid == request.auth.uid
+                        && request.resource.data.uid == uid()
+                        && request.resource.data.text.size() > 0
                         && request.resource.data.text.size() <= 500;
-          allow update: if isAdmin();   // chỉ admin xoá/sửa comment
-          allow delete: if isAdmin() || (isAuth() && isOwner(resource.data.uid));
+          allow delete: if isAdmin() || (isAuth() && resource.data.uid == uid());
+          allow update: if isAdmin();
         }
       }
     }
