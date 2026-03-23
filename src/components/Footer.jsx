@@ -36,10 +36,10 @@ export default function Footer() {
           <div style={{ flex:'1 1 140px', minWidth:130 }}>
             <h4 style={{ margin:'0 0 14px', fontSize:14, fontWeight:800, color:'#1e293b' }}>Info</h4>
             {[
-              { icon:'ℹ️', label:'About Us',       path:'/about' },
-              { icon:'🔒', label:'Privacy Policy',  path:'/privacy' },
-              { icon:'📄', label:'Terms of Use',    path:'/terms' },
-              { icon:'✍️', label:'Become a Translator', path:'/ctv' },
+              { icon:'ℹ️', label:'About Us',       path:'/page/about-us' },
+              { icon:'🔒', label:'Privacy Policy',  path:'/page/privacy-policy' },
+              { icon:'📄', label:'Terms of Use',    path:'/page/terms-of-use' },
+              { icon:'✍️', label:'Become a Translator', path:'/contributors' },
             ].map(item => (
               <Link key={item.label} to={item.path}
                 style={{ display:'flex', alignItems:'center', gap:8, fontSize:13, color:'#374151', textDecoration:'none', marginBottom:8 }}

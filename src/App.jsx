@@ -27,6 +27,7 @@ import AffiliateManager from './pages/admin/AffiliateManager'
 import CMSManager       from './pages/admin/CMSManager'
 import CTVPayments      from './pages/admin/CTVPayments'
 import CTVPage          from './pages/CTVPage'
+import PageView         from './pages/PageView'
 
 export default function App() {
   const auth = useAuth()
@@ -67,6 +68,7 @@ export default function App() {
             element={<ChapterPage auth={auth} onLoginRequest={() => setShowAuth(true)} onCoinModal={() => setShowCoin(true)} />} />
           <Route path="/team" element={<TeamPage auth={auth} />} />
           <Route path="/contributors" element={<CTVPage auth={auth} onLoginRequest={() => setShowAuth(true)} />} />
+          <Route path="/page/:slug" element={<PageView />} />
           <Route path="/ctv"  element={<TeamPage auth={auth} />} />
 
           {/* Admin */}
