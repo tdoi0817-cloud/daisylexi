@@ -67,3 +67,75 @@ a { color: inherit; }
   .story-grid { grid-template-columns: repeat(5, 1fr) !important; }
   .page-content { padding: 20px 24px; }
 }
+
+/* ── Mobile responsive fixes ─────────────────────────────── */
+@media (max-width: 640px) {
+  /* Story page */
+  .chapter-grid { grid-template-columns: 1fr !important; }
+  .chapter-grid a { border-right: none !important; }
+
+  /* Story meta — stack vertically */
+  .story-meta-table { font-size: 13px !important; }
+
+  /* Story action buttons — full width */
+  .story-actions { flex-direction: column !important; }
+  .story-actions a, .story-actions button { width: 100% !important; text-align: center !important; }
+
+  /* Chapter page text content */
+  .chapter-text-content { padding: 18px 16px !important; font-size: 15px !important; }
+
+  /* Header — hide logo text on tiny screens */
+  .header-logo-text { display: none !important; }
+
+  /* Admin sidebar — hide on mobile */
+  .admin-sidebar { display: none !important; }
+  .admin-main { padding: 12px !important; }
+
+  /* Affiliate grid — single col on mobile */
+  .affiliate-grid { grid-template-columns: 1fr !important; }
+
+  /* Team page stat bar */
+  .team-stats { grid-template-columns: 1fr !important; }
+
+  /* General card grids */
+  .card-grid-2 { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 480px) {
+  body { font-size: 14px; }
+  .app-wrapper { padding-left: 12px !important; padding-right: 12px !important; }
+  h1 { font-size: 28px !important; }
+}
+
+/* ── Chapter text reader styles ───────────────────────────── */
+.chapter-text-content {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 17px;
+  line-height: 1.9;
+  color: #1e293b;
+  letter-spacing: 0.01em;
+}
+.chapter-text-content p {
+  margin: 0 0 20px;
+  text-align: justify;
+  text-indent: 1.5em;
+}
+.chapter-text-content p:first-child {
+  text-indent: 0;
+}
+
+/* ── Story page buttons ───────────────────────────────────── */
+.story-btn-read {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 20px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 15px;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  flex: 1;
+}

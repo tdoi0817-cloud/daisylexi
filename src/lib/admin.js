@@ -1,7 +1,8 @@
 // src/lib/admin.js — Tất cả operations cho Admin/CTV
 import {
   collection, doc,
-  getDocs, getDoc, addDoc, setDoc, updateDoc, deleteDoc,
+  getDocs, getDoc, addDoc,
+  where, setDoc, updateDoc, deleteDoc,
   query, orderBy, limit, serverTimestamp,
 } from 'firebase/firestore'
 import {
@@ -32,6 +33,32 @@ export async function getUsers(limitN = 50) {
   const q    = query(collection(db, 'users'), orderBy('createdAt', 'desc'), limit(limitN))
   const snap = await getDocs(q)
   return snap.docs.map(d => ({ id: d.id, ...d.data() }))
+}
+
+
+// ── User management ──────────────────────────────
+export async function deleteUserDoc(uid) {
+  await deleteDoc(doc(db, 'users', uid))
+}
+
+export async function updateUserData(uid, data) {
+  await updateDoc(doc(db, 'users', uid), { ...data, updatedAt: serverTimestamp() })
+}
+
+export async function getUserStories(uid) {
+  const q = query(collection(db, 'stories'), where('authorUid', '==', uid), orderBy('createdAt','desc'), limit(20))
+  const snap = await getDocs(q)
+  return snap.docs.map(d => ({ id: d.id, ...d.data() }))
+}
+
+export async function getPendingUsers() {
+  const q = query(collection(db, 'users'), where('status', '==', 'pending'), orderBy('createdAt','desc'))
+  const snap = await getDocs(q)
+  return snap.docs.map(d => ({ id: d.id, ...d.data() }))
+}
+
+export async function approveUser(uid) {
+  await updateDoc(doc(db, 'users', uid), { status: 'approved', approvedAt: serverTimestamp() })
 }
 
 // ══════════════════════════════════════════════════

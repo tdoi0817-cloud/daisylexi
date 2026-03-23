@@ -47,7 +47,7 @@ function x(text, tag) {
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)) }
 
 // ── Step 1: story structure (title, desc, 9 chapter titles) ───────
-async function genStructure(genre, tone, hook) {
+async function genStructure(genre, tone, hook, numChapters = 9) {
   return callClaude(
 `Write a ${genre} webcomic story.
 Hook: ${hook}
@@ -273,7 +273,7 @@ export default function AIGenerate() {
   }
 
   // ── Single state ───────────────────────────────────────────────
-  const [sf, setSf]     = useState({ genre:'Romance', tone:'Dark & Dramatic', kw:'' })
+  const [sf, setSf]     = useState({ genre:'Romance', tone:'Dark & Dramatic', kw:'', numChapters:9 })
   const [sr, setSr]     = useState(null)
   const [sl, setSl]     = useState(false)
   const [se, setSe]     = useState('')
@@ -296,7 +296,7 @@ export default function AIGenerate() {
     if (!sr) return; setSl(true)
     try {
       const sid = await saveStory(sr.meta, sr.chapters, sf.genre, sf.genre.toLowerCase() + Date.now()%100)
-      navigate(`/admin/stories/${sid}/edit`)
+      navigate(`/admin/stories/${sid}/editor`)
     } catch(e) { setSe(e.message) }
     finally { setSl(false) }
   }
@@ -460,7 +460,7 @@ export default function AIGenerate() {
 
             <button onClick={runSingle} disabled={sl}
               style={{ width:'100%', padding:'13px', background:sl?'#a5b4fc':'linear-gradient(135deg,#6366f1,#8b5cf6)', color:'#fff', border:'none', borderRadius:12, fontWeight:800, fontSize:14, cursor:sl?'default':'pointer', marginBottom:14, display:'flex', alignItems:'center', justifyContent:'center', gap:8 }}>
-              {sl ? <><span style={SPIN}/>Generating 9 chapters...</> : '✨ Generate Story (9 chapters)'}
+              {sl ? <><span style={SPIN}/>Generating 9 chapters...</> : `✨ Generate Story (${sf.numChapters||9} chapters)`}
             </button>
 
             {/* Live log */}

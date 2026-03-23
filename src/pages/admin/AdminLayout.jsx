@@ -12,8 +12,7 @@ const MENU_CTV = [
   { path:'/admin/bulk-upload',  label:'📤 Bulk Upload'                 },
 ]
 const MENU_ADMIN = [
-  { path:'/admin/users',        label:'👥 Manage Users'                },
-  { path:'/admin/roles',        label:'🔑 Roles'                       },
+  { path:'/admin/users',        label:'👥 Users & Roles'               },
   { path:'/admin/seo',          label:'🔍 SEO Manager'                 },
 ]
 

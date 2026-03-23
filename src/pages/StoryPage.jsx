@@ -49,6 +49,15 @@ function timeAgo(ts) {
 
 const CHAPTERS_PER_PAGE = 8
 
+// Mobile styles injected
+const STORY_CSS = `
+  @media (max-width: 600px) {
+    .chapter-grid { grid-template-columns: 1fr !important; }
+    .chapter-grid a { border-right: none !important; }
+    .story-meta-grid { grid-template-columns: 1fr !important; }
+  }
+`
+
 export default function StoryPage({ auth, onLoginRequest, onCoinModal }) {
   const { storyId } = useParams()
   const [story, setStory]       = useState(null)
@@ -87,8 +96,31 @@ export default function StoryPage({ auth, onLoginRequest, onCoinModal }) {
   const ROW = {display:'flex', alignItems:'center', gap:10, padding:'7px 0', fontSize:13, borderBottom:'1px solid #f8fafc'}
   const LABEL = {color:'#6b7280', minWidth:100, flexShrink:0, display:'flex', alignItems:'center', gap:6}
 
+  const isAdmin = auth?.user?.role === 'admin' || auth?.user?.role === 'ctv'
+
   return (
     <div>
+      <style>{STORY_CSS}</style>
+
+      {/* Admin floating bar */}
+      {isAdmin && (
+        <div style={{ background:'linear-gradient(135deg,#1e1b4b,#312e81)', borderRadius:12, padding:'10px 16px', marginBottom:16, display:'flex', alignItems:'center', gap:10, flexWrap:'wrap' }}>
+          <span style={{ fontSize:11, color:'#a5b4fc', fontWeight:700, letterSpacing:1 }}>⚙️ ADMIN MODE</span>
+          <div style={{ flex:1 }} />
+          <a href={`/admin/stories/${storyId}/editor`}
+            style={{ padding:'7px 14px', background:'#6366f1', color:'#fff', textDecoration:'none', borderRadius:8, fontSize:12, fontWeight:700, display:'flex', alignItems:'center', gap:5 }}>
+            ✏️ Edit Story
+          </a>
+          <a href={`/admin/stories/${storyId}/chapters`}
+            style={{ padding:'7px 14px', background:'rgba(255,255,255,0.15)', color:'#e2e8f0', textDecoration:'none', borderRadius:8, fontSize:12, fontWeight:700 }}>
+            📚 Chapters
+          </a>
+          <a href={`/admin/stories/${storyId}/bulk-upload`}
+            style={{ padding:'7px 14px', background:'rgba(255,255,255,0.15)', color:'#e2e8f0', textDecoration:'none', borderRadius:8, fontSize:12, fontWeight:700 }}>
+            📤 Upload
+          </a>
+        </div>
+      )}
       <Link to="/" style={{display:'inline-flex',alignItems:'center',gap:4,color:'#6b7280',fontSize:13,textDecoration:'none',marginBottom:14}}>← Trang chủ</Link>
 
       {/* ── Hero card ── */}
@@ -225,12 +257,12 @@ export default function StoryPage({ auth, onLoginRequest, onCoinModal }) {
         {paged.length===0 ? (
           <p style={{textAlign:'center',padding:'30px',color:'#9ca3af',fontSize:13}}>Không tìm thấy chương nào.</p>
         ) : (
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:0}}>
+          <div className='chapter-grid' style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:0}}>
             {paged.map((ch,i)=>{
               const isLocked=ch.locked&&!ch.unlocked
               return (
                 <Link key={ch.id} to={`/truyen/${storyId}/chuong/${ch.id}`}
-                  style={{textDecoration:'none',color:'inherit',display:'flex',alignItems:'center',gap:10,padding:'11px 14px',borderBottom:'1px solid #f1f5f9',borderRight:i%2===0?'1px solid #f1f5f9':'none',transition:'background 0.1s'}}
+                  style={{textDecoration:'none',color:'inherit',display:'flex',alignItems:'flex-start',gap:10,padding:'12px 14px',borderBottom:'1px solid #f1f5f9',borderRight:i%2===0?'1px solid #f1f5f9':'none',transition:'background 0.1s',minHeight:70}}
                   onMouseOver={e=>e.currentTarget.style.background='#f8fafc'}
                   onMouseOut={e=>e.currentTarget.style.background='transparent'}>
 
@@ -245,7 +277,7 @@ export default function StoryPage({ auth, onLoginRequest, onCoinModal }) {
                       <span style={{fontSize:11,color:'#9ca3af'}}>⏱ {timeAgo(ch.updatedAt)}</span>
                       <span style={{fontSize:11,color:'#9ca3af',marginLeft:'auto'}}>👁 {(ch.views||0).toLocaleString()}</span>
                     </div>
-                    <div style={{fontWeight:700,fontSize:13,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',color:isLocked?'#9ca3af':'#1e293b'}}>
+                    <div style={{fontWeight:700,fontSize:13,color:isLocked?'#9ca3af':'#1e293b',wordBreak:'break-word',lineHeight:1.4}}>
                       {ch.title}
                     </div>
                   </div>
@@ -282,6 +314,9 @@ export default function StoryPage({ auth, onLoginRequest, onCoinModal }) {
         )}
       </div>
 
+      {/* ── Affiliate ── */}
+      <AffiliateWidget genres={s.genres||[]} storyId={storyId} userId={auth?.user?.uid} variant="grid" />
+
       {/* ── Bình luận ── */}
       <div style={{background:'#fff',borderRadius:16,border:'1px solid #e8eaf0',padding:20,marginBottom:16}}>
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16}}>
@@ -290,7 +325,6 @@ export default function StoryPage({ auth, onLoginRequest, onCoinModal }) {
             Bình luận
           </h3>
         </div>
-        <AffiliateWidget genres={s.genres||[]} storyId={storyId} userId={auth?.user?.uid} variant="grid" />
       <CommentSection storyId={storyId} chapterId="general" user={auth?.user} onLoginRequest={onLoginRequest} />
       </div>
 
@@ -299,7 +333,7 @@ export default function StoryPage({ auth, onLoginRequest, onCoinModal }) {
         <div style={{padding:'14px 18px',borderBottom:'1px solid #f1f5f9'}}>
           <h3 style={{margin:0,fontSize:15,fontWeight:800,color:'#1e293b'}}>📚 Gợi ý danh sách truyện liên quan</h3>
         </div>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:0}}>
+        <div className='chapter-grid' style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:0}}>
           {RELATED_CATS.map((item,i)=>(
             <Link key={item.title} to={item.path}
               style={{textDecoration:'none',color:'inherit',display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 18px',borderBottom:i<2?'1px solid #f1f5f9':'none',borderRight:i%2===0?'1px solid #f1f5f9':'none',transition:'background 0.15s',gap:12}}

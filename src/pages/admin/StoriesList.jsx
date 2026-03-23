@@ -69,7 +69,7 @@ export default function StoriesList() {
               </span>
               <span style={{ fontSize:13, color:'#374151' }}>{(s.views||0).toLocaleString()}</span>
               <div style={{ display:'flex', gap:6 }}>
-                <Link to={`/admin/stories/${s.id}/edit`}
+                <Link to={`/admin/stories/${s.id}/editor`}
                   style={{ fontSize:12, color:'#6366f1', fontWeight:700, textDecoration:'none', background:'#ede9fe', padding:'5px 10px', borderRadius:8 }}>
                   Sửa
                 </Link>

@@ -61,6 +61,7 @@ export default function App() {
           <Route path="/truyen/:storyId/chuong/:chapterId"
             element={<ChapterPage auth={auth} onLoginRequest={() => setShowAuth(true)} onCoinModal={() => setShowCoin(true)} />} />
           <Route path="/team" element={<TeamPage auth={auth} />} />
+          <Route path="/contributors" element={<CTVPage auth={auth} onLoginRequest={() => setShowAuth(true)} />} />
           <Route path="/ctv"  element={<TeamPage auth={auth} />} />
 
           {/* Admin */}
@@ -69,6 +70,7 @@ export default function App() {
             <Route path="stories"                     element={<StoriesList />} />
             <Route path="stories/new"                 element={<StoryForm />} />
             <Route path="stories/:storyId/edit"       element={<StoryForm />} />
+            <Route path="stories/:storyId/editor"     element={<StoryEditor />} />
             <Route path="stories/:storyId/chapters"   element={<ChapterManager />} />
             <Route path="stories/:storyId/bulk-upload" element={<BulkUpload />} />
             <Route path="users"                       element={<UserRoles />} />
