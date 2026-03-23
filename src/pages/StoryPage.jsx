@@ -5,6 +5,7 @@ import { getStory, getChapters, incrementView } from '../lib/firestore'
 import { AdBanner } from '../components/AdBanner'
 import ShareModal from '../components/ShareModal'
 import CommentSection from '../components/CommentSection'
+import AffiliateWidget from '../components/affiliate/AffiliateWidget'
 import { useStoryMeta } from '../lib/seo'
 
 const MOCK_STORY = {
@@ -289,7 +290,8 @@ export default function StoryPage({ auth, onLoginRequest, onCoinModal }) {
             Bình luận
           </h3>
         </div>
-        <CommentSection storyId={storyId} chapterId="general" user={auth?.user} onLoginRequest={onLoginRequest} />
+        <AffiliateWidget genres={s.genres||[]} storyId={storyId} userId={auth?.user?.uid} variant="grid" />
+      <CommentSection storyId={storyId} chapterId="general" user={auth?.user} onLoginRequest={onLoginRequest} />
       </div>
 
       {/* ── Truyện liên quan ── */}
