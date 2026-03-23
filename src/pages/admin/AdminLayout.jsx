@@ -13,6 +13,9 @@ const MENU_CTV = [
 ]
 const MENU_ADMIN = [
   { path:'/admin/users',        label:'👥 Users & Roles'               },
+  { path:'/admin/cms',          label:'🗂 CMS (Pages & Posts)'         },
+  { path:'/admin/ctv-payments', label:'💸 CTV Payments'                },
+  { path:'/admin/affiliate',    label:'🛍️ Affiliate'                   },
   { path:'/admin/seo',          label:'🔍 SEO Manager'                 },
 ]
 

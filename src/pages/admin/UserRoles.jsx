@@ -43,15 +43,25 @@ function UserModal({ user, onClose, onSave }) {
   const save = async () => {
     setSaving(true)
     try {
-      await updateDoc(doc(db,'users',user.id), {
+      const data = {
         displayName: form.displayName||'',
         role:        form.role||'reader',
         status:      form.status||'approved',
         bio:         form.bio||'',
         notes:       form.notes||'',
+        coins:       form.coins||0,
+        email:       form.email||'',
         updatedAt:   serverTimestamp(),
-      })
-      onSave({...user,...form})
+      }
+      if (user.id && user.id !== 'new') {
+        await updateDoc(doc(db,'users',user.id), data)
+        onSave({...user,...form})
+      } else {
+        // New user: add to Firestore (manual add)
+        const { addDoc: addD, collection: col } = await import('firebase/firestore')
+        const ref = await addD(col(db,'users'), { ...data, createdAt: serverTimestamp() })
+        onSave({id:ref.id,...data})
+      }
       onClose()
     } catch(e) { alert('Error: '+e.message) }
     finally { setSaving(false) }
@@ -69,7 +79,7 @@ function UserModal({ user, onClose, onSave }) {
               {user.photoURL ? <img src={user.photoURL} alt="" style={{ width:'100%',height:'100%',objectFit:'cover' }} /> : (user.displayName?.[0]||'U')}
             </div>
             <div style={{ flex:1,minWidth:0 }}>
-              <div style={{ fontWeight:800,fontSize:16,color:'#1e293b' }}>{user.displayName||'Unknown'}</div>
+              <div style={{ fontWeight:800,fontSize:16,color:'#1e293b' }}>{user.id==='new'?'New User':user.displayName||'Unknown'}</div>
               <div style={{ fontSize:12,color:'#6b7280' }}>{user.email}</div>
             </div>
             <button onClick={onClose} style={{ background:'none',border:'none',fontSize:22,color:'#9ca3af',cursor:'pointer' }}>×</button>
@@ -92,9 +102,12 @@ function UserModal({ user, onClose, onSave }) {
                 <div><label style={{ fontSize:11,fontWeight:700,color:'#374151',display:'block',marginBottom:4 }}>Display Name</label>
                   <input value={form.displayName||''} onChange={e=>setForm(f=>({...f,displayName:e.target.value}))} style={IS} /></div>
                 <div><label style={{ fontSize:11,fontWeight:700,color:'#374151',display:'block',marginBottom:4 }}>Email</label>
-                  <input value={form.email||''} disabled style={{ ...IS,background:'#f8fafc',color:'#9ca3af' }} /></div>
+                  <input value={form.email||''} onChange={e=>setForm(f=>({...f,email:e.target.value}))}
+                    disabled={user.id!=='new'} style={{ ...IS,background:user.id!=='new'?'#f8fafc':'#fff',color:user.id!=='new'?'#9ca3af':'#1e293b' }} /></div>
               </div>
               <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:10 }}>
+                <div><label style={{ fontSize:11,fontWeight:700,color:'#374151',display:'block',marginBottom:4 }}>Coins (🪙)</label>
+                  <input type="number" value={form.coins||0} onChange={e=>setForm(f=>({...f,coins:+e.target.value}))} min={0} style={IS} /></div>
                 <div><label style={{ fontSize:11,fontWeight:700,color:'#374151',display:'block',marginBottom:4 }}>Role</label>
                   <select value={form.role||'reader'} onChange={e=>setForm(f=>({...f,role:e.target.value}))} style={IS}>
                     {ROLES.map(r=><option key={r.value} value={r.value}>{r.label} — {r.desc}</option>)}
@@ -234,7 +247,7 @@ export default function UserRoles() {
     const q = search.toLowerCase()
     const ms = !q||(u.displayName||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q)
     const mr = roleFilter==='all'||u.role===roleFilter
-    const mst= statFilter==='all'||(u.status||'approved')===statFilter
+    const mst= statFilter==='all'||(!u.status && statFilter==='approved')||(u.status===statFilter)
     const mt = tab==='pending'?(u.status==='pending'):true
     return ms&&mr&&mst&&mt
   })
@@ -258,8 +271,18 @@ export default function UserRoles() {
         )}
 
         {/* Header */}
-        <h2 style={{ margin:'0 0 4px',fontSize:20,fontWeight:800 }}>👥 User Management</h2>
-        <p style={{ margin:'0 0 18px',fontSize:13,color:'#6b7280' }}>Manage roles, approve members, track performance</p>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:18, flexWrap:'wrap', gap:10 }}>
+          <div>
+            <h2 style={{ margin:'0 0 4px',fontSize:20,fontWeight:800 }}>👥 User Management</h2>
+            <p style={{ margin:0,fontSize:13,color:'#6b7280' }}>Manage roles, approve members, track performance</p>
+          </div>
+          <div style={{ display:'flex', gap:8 }}>
+            <button onClick={()=>setSelected({id:'new',displayName:'',email:'',role:'reader',status:'approved',coins:0})}
+              style={{ padding:'9px 18px',background:'linear-gradient(135deg,#6366f1,#8b5cf6)',color:'#fff',border:'none',borderRadius:10,fontWeight:800,fontSize:13,cursor:'pointer' }}>
+              + Add User
+            </button>
+          </div>
+        </div>
 
         {/* KPIs */}
         <div style={{ display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10,marginBottom:18 }}>
