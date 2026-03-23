@@ -2,47 +2,42 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    function isAuth()    { return request.auth != null; }
-    function uid()       { return request.auth.uid; }
-    function userDoc()   { return get(/databases/$(database)/documents/users/$(uid())); }
-    function userRole()  { return isAuth() ? userDoc().data.get('role', 'reader') : 'reader'; }
-    function isAdmin()   { return userRole() == 'admin'; }
-    function isCTV()     { return userRole() == 'ctv' || isAdmin(); }
+    function isAuth()   { return request.auth != null; }
+    function uid()      { return request.auth.uid; }
+    function userRole() {
+      return isAuth()
+        ? get(/databases/$(database)/documents/users/$(uid())).data.get('role','reader')
+        : 'reader';
+    }
+    function isAdmin() { return userRole() == 'admin'; }
+    function isCTV()   { return userRole() == 'ctv' || isAdmin(); }
 
-    // ── Users ──
+    // Users — cho phép user đọc document của chính mình
     match /users/{userId} {
       allow read:   if isAuth() && (uid() == userId || isAdmin());
       allow create: if isAuth() && uid() == userId;
-      // User tự update coins; admin update role
-      allow update: if isAuth() && (
-        uid() == userId ||   // user cập nhật coins của mình
-        isAdmin()            // admin thay đổi role
-      );
+      allow update: if isAuth() && (uid() == userId || isAdmin());
+      allow delete: if isAdmin();
 
       match /unlocked/{docId} {
         allow read, write: if isAuth() && uid() == userId;
       }
     }
 
-    // ── Stories ──
+    // Stories — public đọc
     match /stories/{storyId} {
-      allow read:  if true;
+      allow read:   if true;
       allow create: if isCTV();
       allow update: if isCTV();
       allow delete: if isAdmin();
 
-      // ── Chapters ──
       match /chapters/{chapterId} {
-        allow read:   if true;
-        allow write:  if isCTV();
+        allow read:  if true;
+        allow write: if isCTV();
 
-        // ── Comments ──
         match /comments/{commentId} {
           allow read:   if true;
-          allow create: if isAuth()
-                        && request.resource.data.uid == uid()
-                        && request.resource.data.text.size() > 0
-                        && request.resource.data.text.size() <= 500;
+          allow create: if isAuth() && request.resource.data.uid == uid();
           allow delete: if isAdmin() || (isAuth() && resource.data.uid == uid());
           allow update: if isAdmin();
         }
