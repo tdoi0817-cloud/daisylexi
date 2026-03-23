@@ -21,7 +21,12 @@ import ChapterManager from './pages/admin/ChapterManager'
 import UserRoles      from './pages/admin/UserRoles'
 import AIGenerate     from './pages/admin/AIGenerate'
 import BulkUpload     from './pages/admin/BulkUpload'
-import SEOManager     from './pages/admin/SEOManager'
+import SEOManager       from './pages/admin/SEOManager'
+import StoryEditor      from './pages/admin/StoryEditor'
+import AffiliateManager from './pages/admin/AffiliateManager'
+import CMSManager       from './pages/admin/CMSManager'
+import CTVPayments      from './pages/admin/CTVPayments'
+import CTVPage          from './pages/CTVPage'
 
 export default function App() {
   const auth = useAuth()
@@ -78,6 +83,9 @@ export default function App() {
             <Route path="ai-generate"                 element={<AIGenerate />} />
             <Route path="bulk-upload"                 element={<BulkUpload />} />
             <Route path="seo"                         element={<SEOManager />} />
+            <Route path="affiliate"                   element={<AffiliateManager />} />
+            <Route path="cms"                         element={<CMSManager />} />
+            <Route path="ctv-payments"                element={<CTVPayments />} />
           </Route>
         </Routes>
       </div>
